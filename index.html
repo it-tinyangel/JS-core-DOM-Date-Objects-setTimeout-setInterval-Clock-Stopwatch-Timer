@@ -11,15 +11,39 @@
 <body>
 
 	<section class="clock container light" tabindex="0">
-		<div class="clock__date"><span>00.00.0000</span></div>
+		<div class="clock__date"><span class="clock__date">00.00.0000</span></div>
 		<div class="clock__time">
-			<div class="clock__time__hour"><span>00:</span></div>
-			<div class="clock__time__min"><span>00:</span></div>
-			<div class="clock__time__sec"><span>00</span></div>
+			<span class="clock__time__hour">00</span>
+			<span>:</span>
+			<span class="clock__time__min">00</span>
+			<span>:</span>
+			<span class="clock__time__sec">00</span>
 		</div>
 	</section>
 
-	<section class="stopwatch container" tabindex="0"></section>
+	<section class="stopwatch container" tabindex="0">
+		<div class="stopwatch-wrapper">
+			<div class="stopwatch__content">
+				<div class="stopwatch__time">
+					<span class="stopwatch__time__hour">00</span>
+					<span>:</span>
+					<span class="stopwatch__time__min">00</span>
+					<span>:</span>
+					<span class="stopwatch__time__sec">00</span>
+					<span>:</span>
+					<span class="stopwatch__time__milisec">000</span>
+				</div>
+
+				<div class="stopwatch__btn">
+					<button class="btn stopwatch__btn__start"><span>Start</span></button>
+					<button class="btn stopwatch__btn__stop"><span>Stop</span></button>
+					<button class="btn stopwatch__btn__loop"><span>Loop</span></button>
+					<button class="btn stopwatch__btn__reset"><span>Reset</span></button>
+				</div>
+			</div>
+			<div class="stopwatch__loop-display"><span class="stopwatch__loop-time"></span></div>
+		</div>
+	</section>
 
 	<section class="timer container" tabindex="0"></section>
 
