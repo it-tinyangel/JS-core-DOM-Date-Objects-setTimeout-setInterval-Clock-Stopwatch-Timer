@@ -1,7 +1,7 @@
 @font-face {
 	font-family: 'Digital';
-	src: url('../src/fonts/digital-regular.ttf') format('TrueType');
+	src: url('../fonts/digital-regular.ttf') format('TrueType');
 	font-weight: 400;
 	font-style: normal;
-  font-display: fallback;
+	font-display: fallback;
 }
