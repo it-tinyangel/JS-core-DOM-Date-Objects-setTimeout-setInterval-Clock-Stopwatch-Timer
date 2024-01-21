@@ -111,9 +111,9 @@ section.stopwatch div.stopwatch-wrapper {
 	align-items: center;
 }
 
-section.stopwatch div.stopwatch-wrapper div.stopwatch__content,
-section.stopwatch div.stopwatch-wrapper div.stopwatch__loop-display {
-	max-width: 300px;
+section.stopwatch div.stopwatch__content,
+section.stopwatch div.stopwatch__loop-display {
+	max-width: 320px;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -122,11 +122,7 @@ section.stopwatch div.stopwatch-wrapper div.stopwatch__loop-display {
 	gap: 20px;
 }
 
-section.stopwatch div.stopwatch-wrapper div.stopwatch__loop-display {
-	gap: 8px;
-}
-
-section.stopwatch div.stopwatch-wrapper div.stopwatch__content div.stopwatch__time {
+section.stopwatch div.stopwatch__content div.stopwatch__time {
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -139,23 +135,33 @@ section.stopwatch div.stopwatch__time span.stopwatch__time__hour,
 section.stopwatch div.stopwatch__time span.stopwatch__time__min,
 section.stopwatch div.stopwatch__time span.stopwatch__time__sec,
 section.stopwatch div.stopwatch__time span.stopwatch__time__milisec {
-	max-width: 3.8rem;
+	max-width: 3.7rem;
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
 }
 
 section.stopwatch div.stopwatch__time span.stopwatch__time__milisec {
-	max-width: 5.8rem;
+	max-width: 5.7rem;
 	justify-content: flex-start;
 }
 
-section.stopwatch div.stopwatch-wrapper div.stopwatch__content div.stopwatch__btn {
+section.stopwatch div.stopwatch__content div.stopwatch__btn {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 7px;
+	gap: 10px;
+}
+
+section.stopwatch div.stopwatch__loop-display {
+	gap: 5px;
+}
+
+section.stopwatch div.stopwatch__loop-display div.stopwatch__time {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 section.stopwatch div.stopwatch__loop-display {
