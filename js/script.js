@@ -1,4 +1,6 @@
 function showDate() {
+	const dateOfDisplaying = document.querySelector('.clock__date');
+
 	// Getting current time and date
 	let date = new Date();
 	let day = date.getDate();
@@ -8,31 +10,35 @@ function showDate() {
 	day = day < 10 ? '0' + day : day;
 	month = month < 10 ? '0' + month : month;
 
-	let currentDate =
-		day + "." + month + "." + year;
+	let currentDate = `${day}.${month}.${year}`;
 
 	// Displaying the date
-	document.querySelector('.clock__date').innerHTML = currentDate;
+	dateOfDisplaying.innerHTML = currentDate;
 }
 
 function showTime() {
+	const hoursOfDisplaying = document.querySelector('.clock__time__hour');
+	const minutesOfDisplaying = document.querySelector('.clock__time__min');
+	const secondsOfDisplaying = document.querySelector('.clock__time__sec');
+
 	// Getting current time and date
 	let time = new Date();
-	let hour = time.getHours();
-	let min = time.getMinutes();
-	let sec = time.getSeconds();
+	let hours = time.getHours();
+	let minutes = time.getMinutes();
+	let seconds = time.getSeconds();
 
-	hour = hour < 10 ? '0' + hour : hour;
-	min = min < 10 ? '0' + min : min;
-	sec = sec < 10 ? '0' + sec : sec;
+	hours = hours < 10 ? '0' + hours : hours;
+	minutes = minutes < 10 ? '0' + minutes : minutes;
+	seconds = seconds < 10 ? '0' + seconds : seconds;
 
 	// Displaying the time
-	document.querySelector(".clock__time__hour").innerHTML = hour + ':';
-	document.querySelector(".clock__time__min").innerHTML = min + ':';
-	document.querySelector(".clock__time__sec").innerHTML = sec;
+	hoursOfDisplaying.innerHTML = hours;
+	minutesOfDisplaying.innerHTML = minutes;
+	secondsOfDisplaying.innerHTML = seconds;
 
 	setInterval(showTime, 1000);
 }
 
-showDate();
-showTime();
+window.onload = showDate();
+
+window.onload = showTime();
