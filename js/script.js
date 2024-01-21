@@ -90,16 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			const elapsedMilliseconds = stopwatch.elapsedTime % 1000;
 
 			const displayText = `
-      <div class="stopwatch__time">
-        <span class="stopwatch__time__hour">${padZero(elapsedHours)}</span>
-        <span>:</span>
-        <span class="stopwatch__time__min">${padZero(elapsedMinutes)}</span>
-        <span>:</span>
-        <span class="stopwatch__time__sec">${padZero(elapsedSeconds)}</span>
-        <span>:</span>
-        <span class="stopwatch__time__count">${padZero(elapsedMilliseconds, 3)}</span>
-      </div>
-    `;
+				<div class="stopwatch__time">
+					<span class="stopwatch__time__hour">${padZero(elapsedHours)}</span>
+					<span>:</span>
+					<span class="stopwatch__time__min">${padZero(elapsedMinutes)}</span>
+					<span>:</span>
+					<span class="stopwatch__time__sec">${padZero(elapsedSeconds)}</span>
+					<span>:</span>
+					<span class="stopwatch__time__count">${padZero(elapsedMilliseconds, 3)}</span>
+				</div>
+			`;
 
 			loopDisplay.innerHTML += displayText;
 		}
