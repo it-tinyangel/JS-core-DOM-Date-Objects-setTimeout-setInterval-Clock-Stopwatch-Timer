@@ -11,7 +11,10 @@
 <body>
 
 	<section class="clock container light" tabindex="0">
-		<div class="clock__date"><span class="clock__date">00.00.0000</span></div>
+		<div class="clock__date">
+			<span class="clock__date-value">00.00.0000</span>
+		</div>
+
 		<div class="clock__time">
 			<span class="clock__time__hour">00</span>
 			<span>:</span>
@@ -45,7 +48,35 @@
 		</div>
 	</section>
 
-	<section class="timer container" tabindex="0"></section>
+	<section class="timer container" tabindex="0">
+		<div class="timer-wrapper">
+			<div class="timer__content">
+				<div class="timer__display">
+					<span class="timer__display__min">00</span>
+					<span class="timer__display__title">Minutes</span>
+				</div>
+
+				<div class="timer__btn">
+					<button class="btn timer__btn__plus"><span>+</span></button>
+					<button class="btn timer__btn__minus"><span>-</span></button>
+				</div>
+			</div>
+
+			<div class="timer__content">
+				<div class="timer__count-display">
+					<span class="timer__count-display__min">00</span>
+					<span>:</span>
+					<span class="timer__count-display__sec">00</span>
+				</div>
+
+				<div class="timer__btn">
+					<button class="btn timer__btn__start"><span>Start</span></button>
+					<button class="btn timer__btn__stop"><span>Stop</span></button>
+					<button class="btn timer__btn__reset"><span>Reset</span></button>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<script src="js/script.js"></script>
 </body>
