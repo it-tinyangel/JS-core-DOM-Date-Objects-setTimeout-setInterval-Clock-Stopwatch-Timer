@@ -49,6 +49,11 @@ body {
 	background: var(--dark-color);
 }
 
+span {
+	letter-spacing: 1.8px;
+	text-transform: uppercase;
+}
+
 section.clock.container,
 section.stopwatch.container,
 section.timer.container {
@@ -108,7 +113,6 @@ section.stopwatch div.stopwatch-wrapper {
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
-	align-items: center;
 }
 
 section.stopwatch div.stopwatch__content,
@@ -116,10 +120,15 @@ section.stopwatch div.stopwatch__loop-display {
 	max-width: 320px;
 	width: 100%;
 	display: flex;
+	flex-wrap: nowrap;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: center;
-	gap: 20px;
+}
+
+section.stopwatch div.stopwatch__loop-display {
+	justify-content: flex-start;
+	gap: 5px;
 }
 
 section.stopwatch div.stopwatch__content div.stopwatch__time {
@@ -146,16 +155,12 @@ section.stopwatch div.stopwatch__time span.stopwatch__time__milisec {
 	justify-content: flex-start;
 }
 
-section.stopwatch div.stopwatch__content div.stopwatch__btn {
+section.stopwatch div.stopwatch__btn {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-}
-
-section.stopwatch div.stopwatch__loop-display {
-	gap: 5px;
 }
 
 section.stopwatch div.stopwatch__loop-display div.stopwatch__time {
@@ -176,6 +181,10 @@ section.stopwatch div.stopwatch__loop-display {
 }
 
 section.stopwatch div.stopwatch__loop-display::-webkit-scrollbar {
+	width: 0;
+}
+
+section.stopwatch div.stopwatch__loop-display::-webkit-scrollbar {
 	width: var(--size-xs);
 }
 
@@ -189,11 +198,17 @@ section.stopwatch div.stopwatch__loop-display::-webkit-scrollbar-thumb {
 	border-radius: var(--small-spacing);
 }
 
-span {
-	letter-spacing: 1.8px;
+::selection {
+	color: var(--light-color);
+	background: var(--secondary-color);
 }
 
-section.stopwatch div.stopwatch__content div.stopwatch__btn button.btn {
+::-moz-selection {
+	color: var(--light-color);
+	background: var(--secondary-color);
+}
+
+button.btn {
 	padding: .25rem .75rem;
 	font: var(--small-main-font);
 	font: var(--extra-small-main-font);
@@ -208,13 +223,121 @@ section.stopwatch div.stopwatch__content div.stopwatch__btn button.btn {
 	cursor: pointer;
 }
 
-section.stopwatch div.stopwatch__content div.stopwatch__btn button.btn:is(:hover, :focus) {
+button.btn:is(:hover, :focus) {
 	box-shadow: .5px .5px 7px var(--secondary-shadow-color);
 }
 
+section.timer div.timer-wrapper {
+	max-width: 900px;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+section.timer div.timer__content,
+section.timer div.timer__display,
+section.timer div.timer__count-display {
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+}
+
+section.timer div.timer__count-display {
+	flex-direction: row;
+	justify-content: center;
+	gap: 2px;
+}
+
+section.timer div.timer__count-display,
+section.timer div.timer__display span.timer__display__min {
+	font: var(--large-main-font);
+}
+
+section.timer div.timer__btn {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
 /* Media Queries */
-@media only screen and (max-width: 679px) {}
+@media only screen and (max-width: 679px) {
+	body {
+		gap: 10px;
+	}
 
-@media only screen and (min-width: 680px) and (max-width: 1023px) {}
+	span {
+		letter-spacing: 1.6px;
+	}
 
-@media only screen and (min-width: 1024px) {}
+	section.clock.container,
+	section.stopwatch.container,
+	section.timer.container {
+		gap: 10px;
+	}
+
+	section.clock.container {
+		flex-direction: column;
+	}
+
+	section.clock div.clock__time {
+		gap: 1px;
+		font: var(--medium-main-font);
+	}
+
+	section.stopwatch div.stopwatch-wrapper,
+	section.timer div.timer-wrapper {
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+
+	section.clock div.clock__time span.clock__time__hour,
+	section.clock div.clock__time span.clock__time__min,
+	section.clock div.clock__time span.clock__time__sec {
+		max-width: 3.75rem;
+	}
+
+	section.stopwatch div.stopwatch__content,
+	section.stopwatch div.stopwatch__loop-display {
+		gap: 15px;
+	}
+
+	section.stopwatch div.stopwatch__loop-display {
+		justify-content: flex-start;
+	}
+
+	section.stopwatch div.stopwatch__loop-display {
+		gap: 3px;
+	}
+
+	section.stopwatch div.stopwatch__content {
+		order: 2;
+	}
+
+	section.stopwatch div.stopwatch__loop-display {
+		order: 1;
+	}
+
+	section.timer div.timer__content,
+	section.timer div.timer__display,
+	section.timer div.timer__count-display {
+		gap: 10px;
+	}
+
+	section.timer div.timer__count-display {
+		flex-direction: row;
+		justify-content: center;
+		gap: 1px;
+	}
+
+	section.timer div.timer__count-display,
+	section.timer div.timer__display span.timer__display__min {
+		font: var(--medium-main-font);
+	}
+}
