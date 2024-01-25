@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const loopStopwatchButton = document.querySelector('.stopwatch__btn__loop');
 	const resetStopwatchButton = document.querySelector('.stopwatch__btn__reset');
 
-	const loopDisplayElement = document.querySelector('.stopwatch__loop-display');
+	const loopDisplayStopwatchElement = document.querySelector('.stopwatch__loop-display');
 
 	// elements of timer
 	const timerDisplayMinElement = document.querySelector('.timer__display__min');
@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	const stopTimerButton = document.querySelector('.timer__btn__stop');
 	const resetTimerButton = document.querySelector('.timer__btn__reset');
 
-	// variables for stopwatch
+	/* variables for stopwatch */
 	let stopwatchInterval;
+	let startTime;
 	let loopTimes = [];
 	let stopwatchTime = {
 		hour: 0,
@@ -51,13 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	currentClock();
 
-	// event listeners for stopwatch 
 	startStopwatchButton.addEventListener('click', startStopwatch);
 	stopStopwatchButton.addEventListener('click', stopStopwatch);
 	loopStopwatchButton.addEventListener('click', loopStopwatch);
 	resetStopwatchButton.addEventListener('click', resetStopwatch);
 
-	// event listeners for timer 
 	plusTimerButton.addEventListener('click', increaseTimer);
 	minusTimerButton.addEventListener('click', decreaseTimer);
 	startTimerButton.addEventListener('click', startTimer);
@@ -77,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	/* stopwatch */
 	function startStopwatch() {
+		startTime = new Date().getTime();
 		stopwatchInterval = setInterval(updateStopwatch, 10);
 	}
 
@@ -85,14 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function loopStopwatch() {
-		let currentStopwatchTime = getCurrentStopwatchTime();
+		const currentStopwatchTime = getCurrentStopwatchTime();
 
 		loopTimes.push(currentStopwatchTime);
-		updateLoopDisplay();
+		displayLoopTimes();
 	}
 
 	function resetStopwatch() {
 		clearInterval(stopwatchInterval);
+
+		stopwatchHourElement.innerText = '00';
+		stopwatchMinElement.innerText = '00';
+		stopwatchSecElement.innerText = '00';
+		stopwatchMillisecElement.innerText = '000';
 
 		loopTimes = [];
 		stopwatchTime = {
@@ -102,17 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			millisec: 0
 		};
 
-		updateStopwatch();
-		updateLoopDisplay();
+		displayLoopTimes();
 	}
 
 	function updateStopwatch() {
-		stopwatchTime.millisec += 10;
+		stopwatchTime.millisec += 10; 
 
 		if (stopwatchTime.millisec >= 1000) {
-			console.log("Before reset millisec:", stopwatchTime.millisec);
 			stopwatchTime.millisec = 0;
-			console.log("After reset millisec:", stopwatchTime.millisec);
 			stopwatchTime.sec += 1;
 		}
 
@@ -141,14 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		);
 	}
 
-	function updateLoopDisplay() {
-		loopDisplayElement.innerHTML = '';
+	function displayLoopTimes() {
+		loopDisplayStopwatchElement.innerHTML = '';
 
-		loopTimes.forEach(function (time) {
-			let loopTimeElement = document.createElement('div');
+		loopTimes.forEach((loopTime) => {
+			const loopItem = document.createElement('div');
 
-			loopTimeElement.textContent = time;
-			loopDisplayElement.appendChild(loopTimeElement);
+			loopItem.innerText = loopTime;
+			loopDisplayStopwatchElement.appendChild(loopItem);
 		});
 	}
 
@@ -192,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		timerMinutes = 0;
 		timerSeconds = 0;
 		isPaused = false;
+
 		updateTimerDisplay();
 		updateTimerStart();
 	}
@@ -201,12 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateTimerStart() {
+		timerCountMinElement.textContent = ('0' + timerMinutes).slice(-2);
+		timerCountSecElement.textContent = ('0' + timerSeconds).slice(-2);
+
 		if (!timerRunning) {
 			startTimer();
 		}
-
-		timerCountMinElement.textContent = ('0' + timerMinutes).slice(-2);
-		timerCountSecElement.textContent = ('0' + timerSeconds).slice(-2);
 	}
 
 	function updateTimer() {
@@ -219,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		} else {
 			timerSeconds -= 1;
 		}
+
 		updateTimerStart();
 	}
 });
