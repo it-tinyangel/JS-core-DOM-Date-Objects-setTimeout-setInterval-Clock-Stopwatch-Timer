@@ -22,14 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	const timerCountMinElement = document.querySelector('.timer__count-display__min');
 	const timerCountSecElement = document.querySelector('.timer__count-display__sec');
 
-	const plusTimerButton = document.querySelector('.timer__btn__plus');
-	const minusTimerButton = document.querySelector('.timer__btn__minus');
+	const increaseTimerButton = document.querySelector('.timer__btn__plus');
+	const decreaseTimerButton = document.querySelector('.timer__btn__minus');
 	const startTimerButton = document.querySelector('.timer__btn__start');
 	const stopTimerButton = document.querySelector('.timer__btn__stop');
 	const resetTimerButton = document.querySelector('.timer__btn__reset');
 
 	const stopwatch = {
 		timerInterval: null,
+		startTime: null,
 		loopTimes: [],
 		stopwatchTime: {
 			hour: 0,
@@ -42,6 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		maxStopPoints: 10,
 	};
 
+	const timer = {
+		timerInterval: null,
+		timerTime: {
+			min: 0,
+			sec: 0,
+		},
+		timerRunning: false,
+		isPaused: false,
+	};
+
 	startClock();
 
 	startStopwatchButton.addEventListener('click', startStopwatch);
@@ -49,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	loopStopwatchButton.addEventListener('click', loopStopwatch);
 	resetStopwatchButton.addEventListener('click', resetStopwatch);
 
-	plusTimerButton.addEventListener('click', increaseTimer);
-	minusTimerButton.addEventListener('click', decreaseTimer);
+	increaseTimerButton.addEventListener('click', increaseTimer);
+	decreaseTimerButton.addEventListener('click', decreaseTimer);
 	startTimerButton.addEventListener('click', startTimer);
 	stopTimerButton.addEventListener('click', stopTimer);
 	resetTimerButton.addEventListener('click', resetTimer);
 
-	/* clock */
+	/* current clock */
 	function updateClock() {
 		const currentDate = new Date();
 
@@ -77,25 +88,25 @@ document.addEventListener('DOMContentLoaded', () => {
 	/* stopwatch */
 	function startStopwatch() {
 		stopStopwatch();
+
+		stopwatch.startTime = Date.now();
 		stopwatch.timerInterval = setInterval(updateStopwatch, 10);
 	}
 
 	function stopStopwatch() {
 		clearInterval(stopwatch.timerInterval);
-		updateStopPoints();
+
+		const { stopPoints, stopwatchTime, maxStopPoints } = stopwatch;
+
+		updateArraySize(stopPoints, stopwatchTime, maxStopPoints);
 	}
 
 	function loopStopwatch() {
 		stopwatch.currentStopwatchTime = getCurrentStopwatchTime();
 
-		const { loopTimes, maxStopPoints, currentStopwatchTime } = stopwatch;
+		const { loopTimes, currentStopwatchTime, maxStopPoints } = stopwatch;
 
-		if (loopTimes.length >= maxStopPoints) {
-			loopTimes.shift();
-		}
-
-		loopTimes.push(currentStopwatchTime);
-
+		updateArraySize(loopTimes, currentStopwatchTime, maxStopPoints);
 		displayLoopTimes();
 	}
 
@@ -106,23 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateStopwatch() {
-		stopwatch.stopwatchTime.millisec++;
-		updateStopwatchDisplay();
-	}
+		const currentTime = Date.now();
+		stopwatch.stopwatchTime.millisec += currentTime - stopwatch.startTime;
+		stopwatch.startTime = currentTime;
 
-	function updateStopwatchDisplay() {
 		const time = convertMillisecToTime(stopwatch.stopwatchTime.millisec);
 
 		updateStopwatchElements(time);
-	}
-
-	function updateStopwatchElements(time) {
-		const { hour, min, sec, millisec } = time;
-
-		stopwatchHourElement.textContent = padZero(hour);
-		stopwatchMinElement.textContent = padZero(min);
-		stopwatchSecElement.textContent = padZero(sec);
-		stopwatchMillisecElement.textContent = padZero(millisec, 3);
 	}
 
 	function convertMillisecToTime(millisec) {
@@ -135,9 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			hour: hour,
 			min: min,
 			sec: sec,
-			millisec: millisecRemainder
+			millisec: millisecRemainder,
 		};
 	};
+
+	function updateStopwatchElements(time) {
+		const { hour, min, sec, millisec } = time;
+
+		stopwatchHourElement.textContent = padZero(hour);
+		stopwatchMinElement.textContent = padZero(min);
+		stopwatchSecElement.textContent = padZero(sec);
+		stopwatchMillisecElement.textContent = padZero(millisec, 3);
+	}
 
 	function getCurrentStopwatchTime() {
 		return convertMillisecToTime(stopwatch.stopwatchTime.millisec);
@@ -149,7 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	function clearStopwatchData() {
 		clearInterval(stopwatch.timerInterval);
+
+		stopwatch.timerInterval = null;
+		stopwatch.startTime = null;
+
 		stopwatch.loopTimes = [];
+		stopwatch.stopwatchTime = {
+			hour: 0,
+			min: 0,
+			sec: 0,
+			millisec: 0,
+		};
+
+		stopwatch.currentStopwatchTime = 0;
+		stopwatch.stopPoints = [];
+		stopwatch.maxStopPoints = 10;
 	}
 
 	function resetStopwatchTimeDisplay() {
@@ -173,13 +197,84 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
 	}
 
-	function updateStopPoints() {
-		const { stopPoints, maxStopPoints, stopwatchTime } = stopwatch;
-
-		if (stopPoints.length >= maxStopPoints) {
-			stopPoints.shift();
+	function updateArraySize(array, element, maxSize) {
+		if (array.length >= maxSize) {
+			array.shift();
 		}
 
-		stopPoints.push(stopwatchTime);
-	};
+		array.push(element);
+	}
+
+	/* timer */
+	function increaseTimer() {
+		const { timerTime, timerRunning, isPaused } = timer;
+
+		if (timerTime.min < 25 && !timerRunning && !isPaused) {
+			timerTime.min++;
+
+			updateTimerDisplay();
+		}
+	}
+
+	function decreaseTimer() {
+		const { timerTime, timerRunning, isPaused } = timer;
+
+		if (timerTime.min > 0 && !timerRunning && !isPaused) {
+			timerTime.min--;
+
+			updateTimerDisplay();
+		}
+	}
+
+	function startTimer() {
+		timer.timerInterval = setInterval(updateTimer, 1000);
+
+		timer.timerRunning = true;
+		timer.isPaused = false;
+	}
+
+	function stopTimer() {
+		clearInterval(timer.timerInterval);
+
+		timer.timerRunning = false;
+		timer.isPaused = true;
+	}
+
+	function resetTimer() {
+		clearTimerData();
+		updateTimerDisplay();
+		updateTimerStart()
+	}
+
+	function clearTimerData() {
+		clearInterval(timer.timerInterval);
+
+		timer.timerTime = { min: 0, sec: 0 };
+		timer.timerRunning = false;
+		timer.isPaused = false;
+	}
+
+	function updateTimerDisplay() {
+		timerDisplayMinElement.textContent = padZero(timer.timerTime.min);
+	}
+
+	function updateTimerStart() {
+		timerCountMinElement.textContent = padZero(timer.timerTime.min);
+		timerCountSecElement.textContent = padZero(timer.timerTime.sec);
+	}
+
+	function updateTimer() {
+		const { timerTime } = timer;
+
+		if (timerTime.min === 0 && timerTime.sec === 0) {
+			stopTimer();
+			resetTimer();
+			return;
+		}
+
+		timerTime.sec = timerTime.sec === 0 ? 59 : timerTime.sec - 1;
+		timerTime.min = timerTime.sec === 59 ? timerTime.min - 1 : timerTime.min;
+
+		updateTimerStart();
+	}
 });
