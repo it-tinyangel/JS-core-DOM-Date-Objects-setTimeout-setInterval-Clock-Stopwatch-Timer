@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	stopTimerButton.addEventListener('click', stopTimer);
 	resetTimerButton.addEventListener('click', resetTimer);
 
-	/* current clock */
+	/* clock */
 	function updateClock() {
 		const currentDate = new Date();
 
@@ -85,14 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		return value.toString().padStart(length, '0');
 	}
 
-	/* stopwatch */
 	function startStopwatch() {
 		stopStopwatch();
-
 		stopwatch.startTime = Date.now();
 		stopwatch.timerInterval = setInterval(updateStopwatch, 10);
 	}
 
+	// Функція для зупинки секундоміру
 	function stopStopwatch() {
 		clearInterval(stopwatch.timerInterval);
 
@@ -117,12 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateStopwatch() {
+		const { stopwatchTime } = stopwatch;
 		const currentTime = Date.now();
-		stopwatch.stopwatchTime.millisec += currentTime - stopwatch.startTime;
+
+		stopwatchTime.millisec += currentTime - stopwatch.startTime;
 		stopwatch.startTime = currentTime;
 
-		const time = convertMillisecToTime(stopwatch.stopwatchTime.millisec);
-
+		const time = convertMillisecToTime(stopwatchTime.millisec);
 		updateStopwatchElements(time);
 	}
 
@@ -132,12 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const sec = Math.floor((millisec % (60 * 1000)) / 1000);
 		const millisecRemainder = millisec % 1000;
 
-		return {
-			hour: hour,
-			min: min,
-			sec: sec,
-			millisec: millisecRemainder,
-		};
+		return { hour: hour, min: min, sec: sec, millisec: millisecRemainder };
 	};
 
 	function updateStopwatchElements(time) {
@@ -243,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	function resetTimer() {
 		clearTimerData();
 		updateTimerDisplay();
-		updateTimerStart()
+		updateTimerStart();
 	}
 
 	function clearTimerData() {
@@ -269,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (timerTime.min === 0 && timerTime.sec === 0) {
 			stopTimer();
 			resetTimer();
+
 			return;
 		}
 
