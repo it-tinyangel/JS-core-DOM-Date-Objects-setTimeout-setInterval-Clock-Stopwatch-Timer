@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		stopwatch.timerInterval = setInterval(updateStopwatch, 10);
 	}
 
-	// Функція для зупинки секундоміру
 	function stopStopwatch() {
 		clearInterval(stopwatch.timerInterval);
 
