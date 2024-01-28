@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const loopDisplayStopwatchElement = document.querySelector('.stopwatch__loop-display');
 
 	const timerDisplayMinElement = document.querySelector('.timer__display__min');
-
 	const timerCountMinElement = document.querySelector('.timer__count-display__min');
 	const timerCountSecElement = document.querySelector('.timer__count-display__sec');
 
@@ -71,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const currentDate = new Date();
 
 		dateElement.textContent = currentDate.toLocaleDateString();
-		timeHourElement.textContent = padZero(currentDate.getHours());
-		timeMinElement.textContent = padZero(currentDate.getMinutes());
-		timeSecElement.textContent = padZero(currentDate.getSeconds());
+		timeHourElement.textContent = zeroPadding(currentDate.getHours());
+		timeMinElement.textContent = zeroPadding(currentDate.getMinutes());
+		timeSecElement.textContent = zeroPadding(currentDate.getSeconds());
 	}
 
 	function startClock() {
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		setInterval(updateClock, 1000);
 	}
 
-	function padZero(value, length = 2) {
+	function zeroPadding(value, length = 2) {
 		return value.toString().padStart(length, '0');
 	}
 
@@ -95,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		clearInterval(stopwatch.timerInterval);
 
 		const { stopPoints, stopwatchTime, maxStopPoints } = stopwatch;
-
 		updateArraySize(stopPoints, stopwatchTime, maxStopPoints);
 	}
 
@@ -103,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		stopwatch.currentStopwatchTime = getCurrentStopwatchTime();
 
 		const { loopTimes, currentStopwatchTime, maxStopPoints } = stopwatch;
-
 		updateArraySize(loopTimes, currentStopwatchTime, maxStopPoints);
+
 		displayLoopTimes();
 	}
 
@@ -115,32 +113,32 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateStopwatch() {
-		const { stopwatchTime } = stopwatch;
+		const { startTime, stopwatchTime } = stopwatch;
 		const currentTime = Date.now();
 
-		stopwatchTime.millisec += currentTime - stopwatch.startTime;
+		stopwatchTime.millisec += currentTime - startTime;
 		stopwatch.startTime = currentTime;
 
 		const time = convertMillisecToTime(stopwatchTime.millisec);
 		updateStopwatchElements(time);
 	}
 
-	function convertMillisecToTime(millisec) {
-		const hour = Math.floor(millisec / (3600 * 1000));
-		const min = Math.floor((millisec % (3600 * 1000)) / (60 * 1000));
-		const sec = Math.floor((millisec % (60 * 1000)) / 1000);
-		const millisecRemainder = millisec % 1000;
+function convertMillisecToTime(millisec) {
+	const hour = Math.floor(millisec / (3600 * 1000));
+	const min = Math.floor((millisec % (3600 * 1000)) / (60 * 1000));
+	const sec = Math.floor((millisec % (60 * 1000)) / 1000);
+	const millisecRemainder = millisec % 1000;
 
-		return { hour: hour, min: min, sec: sec, millisec: millisecRemainder };
-	};
+	return { hour, min, sec, millisec: millisecRemainder };
+}
 
 	function updateStopwatchElements(time) {
 		const { hour, min, sec, millisec } = time;
 
-		stopwatchHourElement.textContent = padZero(hour);
-		stopwatchMinElement.textContent = padZero(min);
-		stopwatchSecElement.textContent = padZero(sec);
-		stopwatchMillisecElement.textContent = padZero(millisec, 3);
+		stopwatchHourElement.textContent = zeroPadding(hour);
+		stopwatchMinElement.textContent = zeroPadding(min);
+		stopwatchSecElement.textContent = zeroPadding(sec);
+		stopwatchMillisecElement.textContent = zeroPadding(millisec, 3);
 	}
 
 	function getCurrentStopwatchTime() {
@@ -156,8 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		stopwatch.timerInterval = null;
 		stopwatch.startTime = null;
-
 		stopwatch.loopTimes = [];
+
 		stopwatch.stopwatchTime = {
 			hour: 0,
 			min: 0,
@@ -171,23 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function resetStopwatchTimeDisplay() {
-		stopwatchHourElement.textContent = '00';
-		stopwatchMinElement.textContent = '00';
-		stopwatchSecElement.textContent = '00';
-		stopwatchMillisecElement.textContent = '000';
+		stopwatchHourElement.textContent = zeroPadding(0);
+		stopwatchMinElement.textContent = zeroPadding(0);
+		stopwatchSecElement.textContent = zeroPadding(0);
+		stopwatchMillisecElement.textContent = zeroPadding(0, 3);
 	};
 
 	function formatTime(time) {
 		const { hour, min, sec, millisec } = time;
 
 		return `<div class="stopwatch__time">
-                <span class="stopwatch__time__hour">${padZero(hour)}</span>
+                <span class="stopwatch__time__hour">${zeroPadding(hour)}</span>
                 <span>:</span>
-                <span class="stopwatch__time__min">${padZero(min)}</span>
+                <span class="stopwatch__time__min">${zeroPadding(min)}</span>
                 <span>:</span>
-                <span class="stopwatch__time__sec">${padZero(sec)}</span>
+                <span class="stopwatch__time__sec">${zeroPadding(sec)}</span>
                 <span>:</span>
-                <span class="stopwatch__time__count">${padZero(millisec, 3)}</span>
+                <span class="stopwatch__time__count">${zeroPadding(millisec, 3)}</span>
             </div>`;
 	}
 
@@ -205,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		if (timerTime.min < 25 && !timerRunning && !isPaused) {
 			timerTime.min++;
-
 			updateTimerDisplay();
 		}
 	}
@@ -215,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		if (timerTime.min > 0 && !timerRunning && !isPaused) {
 			timerTime.min--;
-
 			updateTimerDisplay();
 		}
 	}
@@ -249,27 +245,25 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function updateTimerDisplay() {
-		timerDisplayMinElement.textContent = padZero(timer.timerTime.min);
+		timerDisplayMinElement.textContent = zeroPadding(timer.timerTime.min);
 	}
 
 	function updateTimerStart() {
-		timerCountMinElement.textContent = padZero(timer.timerTime.min);
-		timerCountSecElement.textContent = padZero(timer.timerTime.sec);
+		timerCountMinElement.textContent = zeroPadding(timer.timerTime.min);
+		timerCountSecElement.textContent = zeroPadding(timer.timerTime.sec);
 	}
 
 	function updateTimer() {
 		const { timerTime } = timer;
 
 		if (timerTime.min === 0 && timerTime.sec === 0) {
+			clearInterval(timer.timerInterval);
 			stopTimer();
 			resetTimer();
-
-			return;
+		} else {
+			timerTime.sec = timerTime.sec === 0 ? 59 : timerTime.sec - 1;
+			timerTime.min = timerTime.sec === 59 ? timerTime.min - 1 : timerTime.min;
+			updateTimerStart();
 		}
-
-		timerTime.sec = timerTime.sec === 0 ? 59 : timerTime.sec - 1;
-		timerTime.min = timerTime.sec === 59 ? timerTime.min - 1 : timerTime.min;
-
-		updateTimerStart();
 	}
 });
