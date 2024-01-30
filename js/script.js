@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return value.toString().padStart(length, '0');
 	}
 
+	/* stopwatch */
 	function startStopwatch() {
 		stopStopwatch();
 		stopwatch.startTime = Date.now();
@@ -123,14 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		updateStopwatchElements(time);
 	}
 
-function convertMillisecToTime(millisec) {
-	const hour = Math.floor(millisec / (3600 * 1000));
-	const min = Math.floor((millisec % (3600 * 1000)) / (60 * 1000));
-	const sec = Math.floor((millisec % (60 * 1000)) / 1000);
-	const millisecRemainder = millisec % 1000;
+	function convertMillisecToTime(millisec) {
+		const hour = Math.floor(millisec / (3600 * 1000));
+		const min = Math.floor((millisec % (3600 * 1000)) / (60 * 1000));
+		const sec = Math.floor((millisec % (60 * 1000)) / 1000);
+		const millisecRemainder = millisec % 1000;
 
-	return { hour, min, sec, millisec: millisecRemainder };
-}
+		return { hour, min, sec, millisec: millisecRemainder };
+	}
 
 	function updateStopwatchElements(time) {
 		const { hour, min, sec, millisec } = time;
